@@ -1,23 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [mode, setMode] = useState("dark");
+
+  const toDark = () => setMode("dark");
+  const toLight = () => setMode("light");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          React Hooks Tutorial
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className={`App ${mode === "dark" ? "dark" : "light"}`}>
+      <header className={`App-header`}>
+        <h1>React Hooks Tutorial</h1>
+        {mode === "dark" ? (
+          <button className="btn-dark" onClick={toLight}>
+            Light
+          </button>
+        ) : (
+          <button className="btn-ligth" onClick={toDark}>
+            Dark
+          </button>
+        )}
       </header>
     </div>
   );
