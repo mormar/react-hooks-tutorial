@@ -5,7 +5,9 @@ function App() {
   const [mode, setMode] = useState("dark");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filteredPosts, setFilteredPosts] = useState([]);
 
   const toDark = () => setMode("dark");
   const toLight = () => setMode("light");
@@ -34,6 +36,14 @@ function App() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setFilteredPosts(
+      posts.filter((post) =>
+        post.title.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, posts]);
+
   return (
     <div className={`App ${mode === "dark" ? "dark" : "light"}`}>
       <header className={`App-header`}>
@@ -48,17 +58,22 @@ function App() {
           </button>
         )}
       </header>
-      <div>
+      <div className="content-section">
+        <input
+          className="search"
+          type="text"
+          value={search}
+          placeholder="Search Posts"
+          onChange={(e) => setSearch(e.target.value)}
+        />
         {error && <h2 className="error-section">Error</h2>}
         {loading && <h2 className="loading-section">Loading</h2>}
-        {posts !== null &&
-          error === false &&
-          posts.map((post) => (
-            <div className="post-section" key={post.id}>
-              <h2 className="post-title">{post.title}</h2>
-              <p className="post-description">{post.body}</p>
-            </div>
-          ))}
+        {filteredPosts.map((post) => (
+          <div className="post-section" key={post.id}>
+            <h2 className="post-title">{post.title}</h2>
+            <p className="post-description">{post.body}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
